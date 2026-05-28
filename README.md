@@ -2,6 +2,9 @@
 
 > **[中文版](README_CN.md)** | One skill, every tool. Port your AI coding assistant skills/rules across Hermes, Claude Code, Codex, Cursor, and OpenClaw.
 
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
+![Tools: 5](https://img.shields.io/badge/Tools-5-green.svg)
+
 **The problem:** You write a great skill/rule for one AI coding tool, but it's locked into that tool's format. Switch tools? Rewrite from scratch.
 
 **The solution:** AI Skill Bridge documents the format specs for each tool and provides ready-to-use skill files so you can write once and port everywhere.
@@ -22,66 +25,56 @@
 
 ## Quick Start
 
+### One-click install (all tools)
+
+```bash
+./install.sh
+```
+
+### Install to specific tool(s)
+
+```bash
+./install.sh claude-code       # Single tool
+./install.sh hermes cursor     # Multiple tools
+```
+
+### Manual install
+
 Pick your tool and copy the skill file to the right location:
 
-### Hermes
+| Tool | Command |
+|------|---------|
+| **Hermes** | `cp hermes/skill.md ~/.hermes/skills/devops/ai-skill-bridge/SKILL.md` |
+| **Claude Code** | `cp claude-code/skill.md ~/.claude/commands/ai-skill-bridge.md` |
+| **Codex** | `mkdir -p ~/.codex/skills && cp codex/skill.md ~/.codex/skills/ai-skill-bridge.md` |
+| **Cursor** | `mkdir -p .cursor/rules && cp cursor/skill.mdc .cursor/rules/ai-skill-bridge.mdc` |
+| **OpenClaw** | `mkdir -p ~/.openclaw/skills && cp openclaw/skill.md ~/.openclaw/skills/ai-skill-bridge.md` |
 
-```bash
-cp hermes/skill.md ~/.hermes/skills/devops/ai-skill-bridge/SKILL.md
-```
+> **Notes:**
+> - **Claude Code** — `~/.claude/commands/` is global (all projects), `.claude/commands/` is project-only. Use `/ai-skill-bridge` to invoke.
+> - **Codex** — No slash command. Tell Codex: `先读 ~/.codex/skills/ai-skill-bridge.md，然后按规范做`, or add to your project's `AGENTS.md`.
+> - **Cursor** — Auto-loaded when editing any file in the project. No global equivalent.
+> - **OpenClaw** — Reference from `~/.openclaw/agents/main/SOUL.md` (don't dump the full skill into SOUL.md).
 
-### Claude Code
+---
 
-```bash
-# Global (all projects)
-cp claude-code/skill.md ~/.claude/commands/ai-skill-bridge.md
+## Pitfalls
 
-# Project-only
-cp claude-code/skill.md .claude/commands/ai-skill-bridge.md
-```
+> Read these before porting — they save time.
 
-Then use `/ai-skill-bridge` in Claude Code.
-
-### Codex
-
-```bash
-mkdir -p ~/.codex/skills
-cp codex/skill.md ~/.codex/skills/ai-skill-bridge.md
-```
-
-Then tell Codex: `先读 ~/.codex/skills/ai-skill-bridge.md，然后按规范做`
-
-Or add to your project's `AGENTS.md`:
-```
-For skill porting rules, read ~/.codex/skills/ai-skill-bridge.md
-```
-
-### Cursor
-
-```bash
-mkdir -p .cursor/rules
-cp cursor/skill.mdc .cursor/rules/ai-skill-bridge.mdc
-```
-
-Auto-loaded when editing any file in the project.
-
-### OpenClaw
-
-```bash
-mkdir -p ~/.openclaw/skills
-cp openclaw/skill.md ~/.openclaw/skills/ai-skill-bridge.md
-```
-
-Reference from `~/.openclaw/agents/main/SOUL.md`:
-```markdown
-For skill porting rules, read ~/.openclaw/skills/ai-skill-bridge.md
-```
+- **Do NOT copy YAML frontmatter verbatim across tools** — Claude Code and Codex render it as visible text, wasting context tokens.
+- **Codex/OpenClaw have no slash commands** — Users must manually tell the tool to read the skill file, or embed the reference in `AGENTS.md` / `SOUL.md`.
+- **Claude Code commands are global OR project** — `~/.claude/commands/` is global, `.claude/commands/` is project-only. Default to global for reusable skills.
+- **Cursor rules are project-only** — No global equivalent. Copy `.mdc` into each project.
+- **Keep one source of truth** — When updating, always update the canonical version first, then re-port. Don't maintain divergent copies.
+- **OpenClaw SOUL.md is for persona** — Don't dump entire skill files into SOUL.md. Reference them instead.
 
 ---
 
 ## Format Comparison
 
-### Frontmatter
+<details>
+<summary><strong>Frontmatter fields</strong></summary>
 
 | Feature | Hermes | Claude Code | Codex | Cursor | OpenClaw |
 |---------|--------|-------------|-------|--------|----------|
@@ -93,7 +86,10 @@ For skill porting rules, read ~/.openclaw/skills/ai-skill-bridge.md
 | `globs` field | — | — | — | ✅ | — |
 | `alwaysApply` field | — | — | — | ✅ | — |
 
-### Delivery
+</details>
+
+<details>
+<summary><strong>Delivery mechanism</strong></summary>
 
 | Feature | Hermes | Claude Code | Codex | Cursor | OpenClaw |
 |---------|--------|-------------|-------|--------|----------|
@@ -103,6 +99,8 @@ For skill porting rules, read ~/.openclaw/skills/ai-skill-bridge.md
 | Global scope | ✅ | ✅ | ✅ | ❌ | ✅ |
 | Sub-files (refs, templates) | ✅ | ❌ | ❌ | ❌ | ❌ |
 
+</details>
+
 ---
 
 ## How to Port a Skill
@@ -110,18 +108,14 @@ For skill porting rules, read ~/.openclaw/skills/ai-skill-bridge.md
 ### Conversion Checklist
 
 1. **Strip source-specific frontmatter** — Remove YAML blocks that are tool-specific metadata (e.g., Hermes `trigger`, `tags`; Cursor `globs`, `alwaysApply`). These don't transfer.
-
 2. **Inline referenced files** — If the source skill references `references/`, `templates/`, `scripts/` subdirectories, inline the critical content into the main file. Most tools only support a single file.
-
 3. **Keep core instructions intact** — All design rules, audit checklists, forbidden patterns, and workflow steps transfer as-is.
-
 4. **Adapt delivery hints** — For tools without slash commands (Codex, OpenClaw), add a note at the top about how to invoke the skill.
-
 5. **Verify file size** — Claude Code commands should stay under ~15KB to avoid context window bloat.
-
 6. **Update registry** — Track which skills have been ported to which tools.
 
-### Direction Matrix
+<details>
+<summary><strong>Direction Matrix</strong> — What to strip/add per conversion</summary>
 
 ```
 Source → Target: What to strip/add
@@ -134,25 +128,21 @@ Cursor → Claude Code:  Strip frontmatter, inline any referenced content
 Cursor → Codex:        Strip frontmatter, add invocation hint
 ```
 
----
-
-## Pitfalls
-
-- **Do NOT copy YAML frontmatter verbatim across tools** — Claude Code and Codex render it as visible text, wasting context tokens.
-- **Codex/OpenClaw have no slash commands** — Users must manually tell the tool to read the skill file, or embed the reference in `AGENTS.md` / `SOUL.md`.
-- **Claude Code commands are global OR project** — `~/.claude/commands/` is global, `.claude/commands/` is project-only. Default to global for reusable skills.
-- **Cursor rules are project-only** — No global equivalent. Copy `.mdc` into each project.
-- **Keep one source of truth** — When updating, always update the canonical version first, then re-port. Don't maintain divergent copies.
-- **OpenClaw SOUL.md is for persona** — Don't dump entire skill files into SOUL.md. Reference them instead.
+</details>
 
 ---
 
 ## Project Structure
 
+<details>
+<summary><strong>Show tree</strong></summary>
+
 ```
 ai-skill-bridge/
 ├── README.md              ← English
 ├── README_CN.md           ← 中文版
+├── install.sh             ← One-click installer
+├── registry.md            ← Porting status tracker
 ├── hermes/
 │   └── skill.md           (YAML frontmatter + markdown)
 ├── claude-code/
@@ -164,6 +154,8 @@ ai-skill-bridge/
 └── openclaw/
     └── skill.md           (pure markdown + SOUL.md reference)
 ```
+
+</details>
 
 ---
 

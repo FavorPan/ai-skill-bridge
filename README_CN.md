@@ -2,6 +2,9 @@
 
 > **[English](README.md)** | 一套技能，所有工具通用。在 Hermes、Claude Code、Codex、Cursor、OpenClaw 之间无缝移植 AI 编程助手的 skill/rules。
 
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
+![Tools: 5](https://img.shields.io/badge/Tools-5-green.svg)
+
 **痛点：** 你为某个 AI 编程工具精心写了一套 skill/rule，但它被锁死在那个工具的格式里。换工具？从头再写一遍。
 
 **解法：** AI Skill Bridge 整理了各工具的格式规范，并提供开箱即用的 skill 文件，让你写一次、到处用。
@@ -22,66 +25,56 @@
 
 ## 快速开始
 
+### 一键安装（所有工具）
+
+```bash
+./install.sh
+```
+
+### 安装到指定工具
+
+```bash
+./install.sh claude-code       # 单个工具
+./install.sh hermes cursor     # 多个工具
+```
+
+### 手动安装
+
 选择你的工具，把 skill 文件复制到对应位置：
 
-### Hermes
+| 工具 | 命令 |
+|------|------|
+| **Hermes** | `cp hermes/skill.md ~/.hermes/skills/devops/ai-skill-bridge/SKILL.md` |
+| **Claude Code** | `cp claude-code/skill.md ~/.claude/commands/ai-skill-bridge.md` |
+| **Codex** | `mkdir -p ~/.codex/skills && cp codex/skill.md ~/.codex/skills/ai-skill-bridge.md` |
+| **Cursor** | `mkdir -p .cursor/rules && cp cursor/skill.mdc .cursor/rules/ai-skill-bridge.mdc` |
+| **OpenClaw** | `mkdir -p ~/.openclaw/skills && cp openclaw/skill.md ~/.openclaw/skills/ai-skill-bridge.md` |
 
-```bash
-cp hermes/skill.md ~/.hermes/skills/devops/ai-skill-bridge/SKILL.md
-```
+> **注意事项：**
+> - **Claude Code** — `~/.claude/commands/` 是全局的（所有项目可用），`.claude/commands/` 是项目级的。使用 `/ai-skill-bridge` 调用。
+> - **Codex** — 没有斜杠命令。告诉 Codex：`先读 ~/.codex/skills/ai-skill-bridge.md，然后按规范做`，或写入项目的 `AGENTS.md`。
+> - **Cursor** — 编辑项目内任何文件时自动加载，没有全局等价物。
+> - **OpenClaw** — 在 `~/.openclaw/agents/main/SOUL.md` 中引用（不要把整个 skill 塞进 SOUL.md）。
 
-### Claude Code
+---
 
-```bash
-# 全局（所有项目可用）
-cp claude-code/skill.md ~/.claude/commands/ai-skill-bridge.md
+## 常见坑
 
-# 仅当前项目
-cp claude-code/skill.md .claude/commands/ai-skill-bridge.md
-```
+> 移植前先看这些，少走弯路。
 
-然后在 Claude Code 中输入 `/ai-skill-bridge` 即可调用。
-
-### Codex
-
-```bash
-mkdir -p ~/.codex/skills
-cp codex/skill.md ~/.codex/skills/ai-skill-bridge.md
-```
-
-告诉 Codex：`先读 ~/.codex/skills/ai-skill-bridge.md，然后按规范做`
-
-或者写入项目的 `AGENTS.md`：
-```
-For skill porting rules, read ~/.codex/skills/ai-skill-bridge.md
-```
-
-### Cursor
-
-```bash
-mkdir -p .cursor/rules
-cp cursor/skill.mdc .cursor/rules/ai-skill-bridge.mdc
-```
-
-编辑项目内任何文件时自动加载。
-
-### OpenClaw
-
-```bash
-mkdir -p ~/.openclaw/skills
-cp openclaw/skill.md ~/.openclaw/skills/ai-skill-bridge.md
-```
-
-在 `~/.openclaw/agents/main/SOUL.md` 中引用：
-```markdown
-For skill porting rules, read ~/.openclaw/skills/ai-skill-bridge.md
-```
+- **不要跨工具照搬 YAML frontmatter** — Claude Code 和 Codex 会把它当纯文本渲染，浪费上下文 token。
+- **Codex/OpenClaw 没有斜杠命令** — 用户必须手动告诉工具读取 skill 文件，或把引用写进 `AGENTS.md` / `SOUL.md`。
+- **Claude Code 命令分全局和项目级** — `~/.claude/commands/` 是全局的，`.claude/commands/` 是项目级的。通用 skill 默认放全局。
+- **Cursor 规则只有项目级** — 没有全局等价物，需要把 `.mdc` 复制到每个项目中。
+- **保持单一数据源** — 更新时先改规范版本（Hermes），再移植到其他工具，不要维护多份副本。
+- **OpenClaw 的 SOUL.md 用于定义人格** — 不要把整个 skill 文件塞进 SOUL.md，用引用的方式指向独立文件。
 
 ---
 
 ## 格式对照表
 
-### Frontmatter 元数据
+<details>
+<summary><strong>Frontmatter 元数据</strong></summary>
 
 | 特性 | Hermes | Claude Code | Codex | Cursor | OpenClaw |
 |------|--------|-------------|-------|--------|----------|
@@ -93,7 +86,10 @@ For skill porting rules, read ~/.openclaw/skills/ai-skill-bridge.md
 | `globs` 字段 | — | — | — | ✅ | — |
 | `alwaysApply` 字段 | — | — | — | ✅ | — |
 
-### 分发机制
+</details>
+
+<details>
+<summary><strong>分发机制</strong></summary>
 
 | 特性 | Hermes | Claude Code | Codex | Cursor | OpenClaw |
 |------|--------|-------------|-------|--------|----------|
@@ -103,6 +99,8 @@ For skill porting rules, read ~/.openclaw/skills/ai-skill-bridge.md
 | 全局作用域 | ✅ | ✅ | ✅ | ❌ | ✅ |
 | 子文件（引用/模板） | ✅ | ❌ | ❌ | ❌ | ❌ |
 
+</details>
+
 ---
 
 ## 如何移植 Skill
@@ -110,18 +108,14 @@ For skill porting rules, read ~/.openclaw/skills/ai-skill-bridge.md
 ### 转换清单
 
 1. **剥离源工具的 frontmatter** — 去掉工具特有的 YAML 元数据（如 Hermes 的 `trigger`/`tags`，Cursor 的 `globs`/`alwaysApply`），这些不可迁移。
-
 2. **内联引用文件** — 如果源 skill 引用了 `references/`、`templates/`、`scripts/` 子目录，把关键内容合并到主文件中。大多数工具只支持单文件。
-
 3. **保留核心指令** — 所有设计规则、审查清单、禁用模式、工作流步骤原样迁移。
-
 4. **适配调用方式** — 对没有斜杠命令的工具（Codex、OpenClaw），在文件顶部加上调用说明。
-
 5. **检查文件大小** — Claude Code 命令建议控制在 15KB 以内，避免上下文窗口浪费。
-
 6. **更新移植记录** — 跟踪哪些 skill 已经移植到哪些工具。
 
-### 移植方向矩阵
+<details>
+<summary><strong>移植方向矩阵</strong> — 各方向需要剥离/添加什么</summary>
 
 ```
 源工具 → 目标工具：需要剥离/添加什么
@@ -134,25 +128,21 @@ Cursor → Claude Code：  剥离 frontmatter，内联引用内容
 Cursor → Codex：        剥离 frontmatter，加调用说明
 ```
 
----
-
-## 常见坑
-
-- **不要跨工具照搬 YAML frontmatter** — Claude Code 和 Codex 会把它当纯文本渲染，浪费上下文 token。
-- **Codex/OpenClaw 没有斜杠命令** — 用户必须手动告诉工具读取 skill 文件，或把引用写进 `AGENTS.md` / `SOUL.md`。
-- **Claude Code 命令分全局和项目级** — `~/.claude/commands/` 是全局的，`.claude/commands/` 是项目级的。通用 skill 默认放全局。
-- **Cursor 规则只有项目级** — 没有全局等价物，需要把 `.mdc` 复制到每个项目中。
-- **保持单一数据源** — 更新时先改规范版本（Hermes），再移植到其他工具，不要维护多份副本。
-- **OpenClaw 的 SOUL.md 用于定义人格** — 不要把整个 skill 文件塞进 SOUL.md，用引用的方式指向独立文件。
+</details>
 
 ---
 
 ## 项目结构
 
+<details>
+<summary><strong>展开查看</strong></summary>
+
 ```
 ai-skill-bridge/
 ├── README.md              ← English
 ├── README_CN.md           ← 中文版
+├── install.sh             ← 一键安装脚本
+├── registry.md            ← 移植状态追踪
 ├── hermes/
 │   └── skill.md           (YAML frontmatter + markdown)
 ├── claude-code/
@@ -164,6 +154,8 @@ ai-skill-bridge/
 └── openclaw/
     └── skill.md           (纯 markdown + SOUL.md 引用说明)
 ```
+
+</details>
 
 ---
 
