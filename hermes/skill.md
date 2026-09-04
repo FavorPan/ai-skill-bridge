@@ -1,6 +1,11 @@
 ---
 name: ai-skill-bridge
+display_name: AI Skill 跨工具分发
+display_name_en: AI Skill Bridge
+version: 1.0.0
 description: Port AI coding assistant skills/rules across tools — Hermes, Claude Code, Codex, Cursor, OpenClaw. Format specs, directory conventions, and conversion checklist.
+description_zh: 在 AI 编程工具之间迁移与分发 skill/规则——覆盖 Hermes、Claude Code、Codex、Cursor、OpenClaw 的格式规范、目录约定与转换清单。
+description_en: Port AI coding assistant skills/rules across tools — Hermes, Claude Code, Codex, Cursor, OpenClaw. Format specs, directory conventions, and conversion checklist.
 category: devops
 tags: [cross-tool, skill-porting, claude-code, codex, cursor, openclaw]
 trigger: port skill, sync skill, 分发skill, 多工具同步, install to claude code, install to codex
