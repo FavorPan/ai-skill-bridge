@@ -44,11 +44,11 @@
 
 | 工具 | 命令 |
 |------|------|
-| **Hermes** | `cp hermes/skill.md ~/.hermes/skills/devops/ai-skill-bridge/SKILL.md` |
-| **Claude Code** | `cp claude-code/skill.md ~/.claude/commands/ai-skill-bridge.md` |
-| **Codex** | `mkdir -p ~/.codex/skills && cp codex/skill.md ~/.codex/skills/ai-skill-bridge.md` |
+| **Hermes** | `cp hermes/SKILL.md ~/.hermes/skills/devops/ai-skill-bridge/SKILL.md` |
+| **Claude Code** | `cp claude-code/SKILL.md ~/.claude/commands/ai-skill-bridge.md` |
+| **Codex** | `mkdir -p ~/.codex/skills && cp codex/SKILL.md ~/.codex/skills/ai-skill-bridge.md` |
 | **Cursor** | `mkdir -p .cursor/rules && cp cursor/skill.mdc .cursor/rules/ai-skill-bridge.mdc` |
-| **OpenClaw** | `mkdir -p ~/.openclaw/skills && cp openclaw/skill.md ~/.openclaw/skills/ai-skill-bridge.md` |
+| **OpenClaw** | `mkdir -p ~/.openclaw/skills && cp openclaw/SKILL.md ~/.openclaw/skills/ai-skill-bridge.md` |
 
 > **注意事项：**
 > - **Claude Code** — `~/.claude/commands/` 是全局的（所有项目可用），`.claude/commands/` 是项目级的。使用 `/ai-skill-bridge` 调用。
@@ -144,15 +144,15 @@ ai-skill-bridge/
 ├── install.sh             ← 一键安装脚本
 ├── registry.md            ← 移植状态追踪
 ├── hermes/
-│   └── skill.md           (YAML frontmatter + markdown)
+│   └── SKILL.md           (YAML frontmatter + markdown)
 ├── claude-code/
-│   └── skill.md           (纯 markdown)
+│   └── SKILL.md           (纯 markdown)
 ├── codex/
-│   └── skill.md           (纯 markdown + 调用说明)
+│   └── SKILL.md           (纯 markdown + 调用说明)
 ├── cursor/
 │   └── skill.mdc          (Cursor .mdc 格式)
 └── openclaw/
-    └── skill.md           (纯 markdown + SOUL.md 引用说明)
+    └── SKILL.md           (纯 markdown + SOUL.md 引用说明)
 ```
 
 </details>
@@ -161,7 +161,7 @@ ai-skill-bridge/
 
 ## 贡献指南
 
-1. **Hermes 版本**（`hermes/skill.md`）是规范的数据源。
+1. **Hermes 版本**（`hermes/SKILL.md`）是规范的数据源。
 2. 更新时先编辑 Hermes 版本，再移植到其他工具。
 3. 欢迎 PR：
    - 新增工具支持（Windsurf、Aider、Continue 等）

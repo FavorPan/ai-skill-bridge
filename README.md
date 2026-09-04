@@ -44,11 +44,11 @@ Pick your tool and copy the skill file to the right location:
 
 | Tool | Command |
 |------|---------|
-| **Hermes** | `cp hermes/skill.md ~/.hermes/skills/devops/ai-skill-bridge/SKILL.md` |
-| **Claude Code** | `cp claude-code/skill.md ~/.claude/commands/ai-skill-bridge.md` |
-| **Codex** | `mkdir -p ~/.codex/skills && cp codex/skill.md ~/.codex/skills/ai-skill-bridge.md` |
+| **Hermes** | `cp hermes/SKILL.md ~/.hermes/skills/devops/ai-skill-bridge/SKILL.md` |
+| **Claude Code** | `cp claude-code/SKILL.md ~/.claude/commands/ai-skill-bridge.md` |
+| **Codex** | `mkdir -p ~/.codex/skills && cp codex/SKILL.md ~/.codex/skills/ai-skill-bridge.md` |
 | **Cursor** | `mkdir -p .cursor/rules && cp cursor/skill.mdc .cursor/rules/ai-skill-bridge.mdc` |
-| **OpenClaw** | `mkdir -p ~/.openclaw/skills && cp openclaw/skill.md ~/.openclaw/skills/ai-skill-bridge.md` |
+| **OpenClaw** | `mkdir -p ~/.openclaw/skills && cp openclaw/SKILL.md ~/.openclaw/skills/ai-skill-bridge.md` |
 
 > **Notes:**
 > - **Claude Code** — `~/.claude/commands/` is global (all projects), `.claude/commands/` is project-only. Use `/ai-skill-bridge` to invoke.
@@ -144,15 +144,15 @@ ai-skill-bridge/
 ├── install.sh             ← One-click installer
 ├── registry.md            ← Porting status tracker
 ├── hermes/
-│   └── skill.md           (YAML frontmatter + markdown)
+│   └── SKILL.md           (YAML frontmatter + markdown)
 ├── claude-code/
-│   └── skill.md           (pure markdown)
+│   └── SKILL.md           (pure markdown)
 ├── codex/
-│   └── skill.md           (pure markdown + invocation hint)
+│   └── SKILL.md           (pure markdown + invocation hint)
 ├── cursor/
 │   └── skill.mdc          (Cursor .mdc format)
 └── openclaw/
-    └── skill.md           (pure markdown + SOUL.md reference)
+    └── SKILL.md           (pure markdown + SOUL.md reference)
 ```
 
 </details>
@@ -161,7 +161,7 @@ ai-skill-bridge/
 
 ## Contributing
 
-1. The **Hermes version** (`hermes/skill.md`) is the canonical source of truth.
+1. The **Hermes version** (`hermes/SKILL.md`) is the canonical source of truth.
 2. When updating, edit the Hermes version first, then port to other tools.
 3. PRs welcome for:
    - New tool support (Windsurf, Aider, Continue, etc.)

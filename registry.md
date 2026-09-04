@@ -6,11 +6,11 @@ Track which skills have been ported to which tools.
 
 | Tool | Status | File | Notes |
 |------|--------|------|-------|
-| Hermes | ✅ Canonical | `hermes/skill.md` | Source of truth |
-| Claude Code | ✅ Ported | `claude-code/skill.md` | Pure markdown |
-| Codex | ✅ Ported | `codex/skill.md` | + invocation hint |
+| Hermes | ✅ Canonical | `hermes/SKILL.md` | Source of truth |
+| Claude Code | ✅ Ported | `claude-code/SKILL.md` | Pure markdown |
+| Codex | ✅ Ported | `codex/SKILL.md` | + invocation hint |
 | Cursor | ✅ Ported | `cursor/skill.mdc` | .mdc format |
-| OpenClaw | ✅ Ported | `openclaw/skill.md` | + SOUL.md reference |
+| OpenClaw | ✅ Ported | `openclaw/SKILL.md` | + SOUL.md reference |
 
 ---
 

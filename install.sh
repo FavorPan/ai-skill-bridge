@@ -13,11 +13,11 @@ ALL_TOOLS="hermes claude-code codex cursor openclaw"
 
 get_src() {
   case "$1" in
-    hermes)      echo "$SCRIPT_DIR/hermes/skill.md" ;;
-    claude-code) echo "$SCRIPT_DIR/claude-code/skill.md" ;;
-    codex)       echo "$SCRIPT_DIR/codex/skill.md" ;;
+    hermes)      echo "$SCRIPT_DIR/hermes/SKILL.md" ;;
+    claude-code) echo "$SCRIPT_DIR/claude-code/SKILL.md" ;;
+    codex)       echo "$SCRIPT_DIR/codex/SKILL.md" ;;
     cursor)      echo "$SCRIPT_DIR/cursor/skill.mdc" ;;
-    openclaw)    echo "$SCRIPT_DIR/openclaw/skill.md" ;;
+    openclaw)    echo "$SCRIPT_DIR/openclaw/SKILL.md" ;;
   esac
 }
 
